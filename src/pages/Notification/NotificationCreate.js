@@ -184,7 +184,7 @@ export default function NotificationCreate() {
                                     label="Đăng ngay"
                                 />
                             </Stack>
-                            <Button variant="outlined" onClick={handleFormSubmit}>Tạo ngay</Button>
+                            <Button variant="outlined" disabled={loading} onClick={handleFormSubmit}>Tạo ngay</Button>
                             {
                                 loading &&
                                 <LinearProgress

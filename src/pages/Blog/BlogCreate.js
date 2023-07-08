@@ -18,7 +18,7 @@ export default function BlogCreate() {
     const [postNow, setPostNow] = useState(true);
     const [reRender, setReRender] = useState(true);
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const validate = useRef({
         title: {
@@ -184,7 +184,7 @@ export default function BlogCreate() {
                                     label="Đăng ngay"
                                 />
                             </Stack>
-                            <Button variant="outlined" onClick={handleFormSubmit}>Đăng bài</Button>
+                            <Button variant="outlined" disabled={loading} onClick={handleFormSubmit}>Đăng bài</Button>
                             {
                                 loading &&
                                 <LinearProgress

@@ -17,6 +17,7 @@ export default function Editor({ onChange, value }) {
                 ckfinder: {
                     // Upload the images to the server using the CKFinder QuickUpload command.
                     uploadUrl: `${process.env.REACT_APP_SERVER_DOMAIN}/api/upload`,
+
                     // Define the CKFinder configuration (if necessary).
                     options: {
                         resourceType: 'Images'

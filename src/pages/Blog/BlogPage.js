@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 // @mui
-import { Grid, Button, Container, Stack, Typography, LinearProgress, Tooltip } from '@mui/material';
+import { Grid, Button, Container, Stack, Typography, LinearProgress, Tooltip, Box, Tabs, Tab, Badge } from '@mui/material';
 // components
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Fragment, useEffect, useState } from 'react';
@@ -26,15 +26,52 @@ export default function BlogPage() {
   const [posts, setPosts] = useState([]);
   const [apiBlogUrl, setApiBlogUrl] = useState('/blogs');
   const [order, setOrder] = useState('new');
+  const [active, setActive] = useState(1);
+  const [pendingStatus, setPendingStatus] = useState(true);
 
   useEffect(() => {
     handleFetchPosts();
-  }, [order])
+  }, [order, active])
+
+  useEffect(() => {
+    handleFetchCountPending();
+  }, [active])
+
+  const handleFetchCountPending = () => {
+    api.post('/admin/post/blogs/pending-count')
+      .then(({ data }) => {
+        if (data.count > 0) {
+          setPendingStatus(false);
+        } else {
+          setPendingStatus(true);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
 
   const handleFetchPosts = () => {
+
+    let activeStatus;
+    switch (active) {
+      case 0:
+        activeStatus = 'wait'
+        break;
+      case 1:
+        activeStatus = 'active'
+        break;
+      case 2:
+        activeStatus = 'deleted'
+        break;
+      default:
+        activeStatus = 'active'
+        break;
+    }
     api.post(apiBlogUrl, {
       paginate: 7,
       order,
+      active: activeStatus
     })
       .then(({ data }) => {
         setApiBlogUrl(data.next_page_url);
@@ -62,6 +99,20 @@ export default function BlogPage() {
     navigate('dang-bai');
   }
 
+  const a11yProps = (index) => {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    };
+  }
+
+  const handleTabChange = (event, newValue) => {
+    setPosts([]);
+    setApiBlogUrl('/blogs');
+    setLoading(1);
+    setActive(newValue);
+  }
+
   return (
     <>
       <Helmet>
@@ -78,12 +129,22 @@ export default function BlogPage() {
           </Button>
         </Stack>
 
-        <Stack mb={5} direction="row" alignItems="center" justifyContent="end">
-          {/* <BlogPostsSearch posts={POSTS} /> */}
+        <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Tabs value={active} onChange={handleTabChange} aria-label="basic tabs example">
+              <Tab label={
+                <Badge invisible={pendingStatus} variant="dot" color="success">
+                  <Box>Pending</Box>
+                </Badge>
+              } {...a11yProps(0)} />
+              <Tab label="Show" {...a11yProps(1)} />
+              <Tab label="Deleted" {...a11yProps(2)} />
+            </Tabs>
+          </Box>
           <BlogPostsSort options={SORT_OPTIONS} onSort={handleBlogSort} defaultValue={order} />
         </Stack>
         {
-          posts.length === 0 &&
+          posts.length === 0 && loading &&
           <LinearProgress color="inherit" />
         }
         <InfiniteScroll
@@ -97,8 +158,13 @@ export default function BlogPage() {
             </p>
           }
           endMessage={
-            <p style={{ textAlign: 'center' }}>
-              <b>Đã hiển thị tất cả bài viết!</b>
+            <p style={{ textAlign: 'center', marginTop: 22 }}>
+              {
+                posts.length > 0
+                  ? <b>Đã hiển thị tất cả bài viết!</b>
+                  : <b>Hiện chưa có bài viết nào!</b>
+              }
+
             </p>
           }
         >
