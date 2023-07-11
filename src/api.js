@@ -7,26 +7,23 @@ const api = axios.create({
 })
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('access_token')
-  config.headers.Authorization = `Bearer ${token}`
-
+  config.withCredentials = true;
   return config
 })
 
-api.interceptors.response.use((response) => response, (error) => {
+api.interceptors.response.use((response) => {
+  return response;
+}, (error) => {
   try {
 
-    console.log(error);
     const { response } = error
 
     if (response.status === 401) {
-
-      localStorage.removeItem('access_token')
-
+      window.location.href = '/login';
     }
 
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 })
 

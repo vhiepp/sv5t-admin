@@ -1,32 +1,60 @@
-const { createContext, useState, useContext } = require("react");
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
+const { createContext, useState, useContext, useEffect } = require("react");
+
+
+const domain = process.env.REACT_APP_SERVER_DOMAIN
+
 
 const StateContext = createContext({
-  user: {},
-  token: null,
-  setUser: () => {},
-  setToken: () => {}
+    user: {},
+    setUser: () => { },
+    api: {}
 })
 
-export const ContextProvider = ({children}) => {
+export const ContextProvider = ({ children }) => {
     const [user, setUser] = useState({})
-    const [token, _setToken] = useState(localStorage.getItem('access_token'))
+    const navigate = useNavigate();
+    const axiosApi = axios.create({
+        baseURL: `${domain}/api`
+    })
 
-    const setToken = (token) => {
-        if (token) {
-            _setToken(token)
-            localStorage.setItem('access_token', token)
-        } else {
-            _setToken(null)
-            localStorage.removeItem('access_token')
+    axiosApi.interceptors.request.use((config) => {
+        config.withCredentials = true;
+        return config
+    })
+
+    axiosApi.interceptors.response.use((response) => {
+        return response;
+    }, (error) => {
+        try {
+
+            const { response } = error
+
+            if (response.status === 401) {
+                navigate('/login');
+                console.warn('Bạn cần phải đăng nhập với quyền quản trị để xem được nội dung này!');
+            }
+
+        } catch (error) {
+            // console.log(error);
         }
-    }
+    })
+
+    useEffect(() => {
+        axiosApi.post('/admin/auth/me')
+            .then(({ data }) => {
+                setUser(data.user)
+            })
+            .catch((e) => {
+            })
+    }, [])
 
     return (
         <StateContext.Provider value={{
             user,
-            token,
             setUser,
-            setToken
+            axiosApi
         }}>
             {children}
         </StateContext.Provider>

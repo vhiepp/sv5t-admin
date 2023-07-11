@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
 import PostForm from "src/sections/@dashboard/post/PostForm";
 
-export default function NotificationCreate() {
-    const navigate = useNavigate()
+export default function PostCreatePage() {
+    const navigate = useNavigate();
 
     const handleBack = () => {
         navigate(-1);
@@ -15,7 +15,7 @@ export default function NotificationCreate() {
     return (
         <>
             <Helmet>
-                <title> Tạo thông báo mới | Sinh viên 5 tốt TVU </title>
+                <title> Viết bài | Sinh viên 5 tốt TVU </title>
             </Helmet>
 
             <Container>
@@ -24,14 +24,14 @@ export default function NotificationCreate() {
                         Trở lại
                     </Button>
                     <Typography variant="h4" gutterBottom>
-                        Tạo thông báo
+                        Đăng bài
                     </Typography>
                 </Stack>
 
                 <PostForm
-                    name="thông báo"
-                    direct="/dashboard/thong-bao"
-                    submitUrl="admin/post/notifications/create"
+                    name="bài viết"
+                    direct="/dashboard/bai-viet"
+                    submitUrl="admin/forum/posts/create"
                 />
 
             </Container >

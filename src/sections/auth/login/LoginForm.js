@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // @mui
-import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox } from '@mui/material';
+import { Link, Stack, IconButton, InputAdornment, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
@@ -11,39 +11,26 @@ import api from '../../../api';
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
-  const { setUser, setToken } = useStateContext();
+  const { setUser } = useStateContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [googleUrl, setGoogleUrl] = useState(null)
-
-  useEffect(() => {
-    api.post(
-      'admin/auth/google/url'
-    )
-      .then(({ data }) => {
-        setGoogleUrl(data.url)
-      })
-  }, [])
 
   const handleLogin = () => {
 
     if (email && password) {
-      api.post(
-        'admin/auth/login',
-        {
-          email,
-          password
-        }
-      )
+      api.post('admin/auth/login', {
+        email,
+        password
+      })
         .then((response) => {
           try {
 
-            localStorage.setItem('access_token', response.data.access_token)
-            setToken(response.data.access_token)
             setUser(response.data.user)
+
+            navigate('/dashboard/app');
 
           } catch (error) {
             console.log(error);

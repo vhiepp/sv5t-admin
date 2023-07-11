@@ -4,6 +4,7 @@ import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
 import { useStateContext } from '../../../contexts/ContextProvider';
 import api from '../../../api';
+import { useNavigate } from 'react-router-dom';
 // mocks_
 // import account from '../../../_mock/account';
 
@@ -28,7 +29,8 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
-  const { user, setUser, setToken } = useStateContext();
+  const { user, setUser } = useStateContext();
+  const navigate = useNavigate();
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -40,11 +42,10 @@ export default function AccountPopover() {
 
   const handleLogout = (ev) => {
     ev.preventDefault()
-    api.post('/auth/logout')
+    api.post('/admin/auth/logout')
       .then((response) => {
-        localStorage.removeItem('access_token')
-        setUser(null)
-        setToken(null)
+        setUser({})
+        navigate('/login')
       })
   }
 

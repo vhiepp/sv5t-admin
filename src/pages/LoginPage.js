@@ -4,10 +4,9 @@ import { styled } from '@mui/material/styles';
 import { Link, Container, Typography, Divider, Stack, Button, Box, Avatar } from '@mui/material';
 // hooks
 import { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useResponsive from '../hooks/useResponsive';
 // components
-import Logo from '../components/logo';
 import Iconify from '../components/iconify';
 // sections
 import { useStateContext } from '../contexts/ContextProvider';
@@ -46,21 +45,27 @@ const StyledContent = styled('div')(({ theme }) => ({
 
 export default function LoginPage() {
   const mdUp = useResponsive('up', 'md');
-  const { token } = useStateContext()
+  const { setUser } = useStateContext()
   const [googleUrl, setGoogleUrl] = useState(null)
+  const navigate = useNavigate();
 
   useEffect(() => {
-    api.post(
-      'admin/auth/google/url'
-    )
+    // api.post('/admin/auth/me')
+    //   .then(({ data }) => {
+    //     if (data.user) {
+    //       setUser(data.user);
+    //       navigate('/dashboard/app');
+    //     }
+    //   })
+    //   .catch((e) => {
+    //     console.warn(e);
+    //   })
+    api.post('admin/auth/google/url')
       .then(({ data }) => {
         setGoogleUrl(data.url)
       })
   }, [])
 
-  if (token) {
-    return <Navigate to="/" />
-  }
 
   const handleLoginSocial = (url) => {
     if (url) {
@@ -108,16 +113,16 @@ export default function LoginPage() {
 
             <Stack direction="row" spacing={2}>
               <Button fullWidth size="large" color="inherit" variant="outlined" onClick={() => handleLoginSocial(googleUrl)}>
-                <Iconify icon="eva:google-fill" color="#DF3E30" width={22} height={22} />
+                <Iconify icon="flat-color-icons:google" color="#DF3E30" width={22} height={22} />
               </Button>
 
               <Button fullWidth size="large" color="inherit" variant="outlined">
-                <Iconify icon="eva:facebook-fill" color="#1877F2" width={22} height={22} />
+                <Iconify icon="logos:microsoft-icon" color="#1877F2" width={22} height={22} />
               </Button>
 
-              <Button fullWidth size="large" color="inherit" variant="outlined">
+              {/* <Button fullWidth size="large" color="inherit" variant="outlined">
                 <Iconify icon="eva:twitter-fill" color="#1C9CEA" width={22} height={22} />
-              </Button>
+              </Button> */}
             </Stack>
 
             <Divider sx={{ my: 3 }}>

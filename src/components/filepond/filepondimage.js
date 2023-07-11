@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FilePond, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
@@ -14,7 +14,6 @@ registerPlugin(
 
 export default function FilePondImage({ onChange, fileUrl }) {
     const [files, setFiles] = useState([]);
-
     return (
         <FilePond
             files={files}

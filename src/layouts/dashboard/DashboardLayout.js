@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
 //
 import Header from './header';
 import Nav from './nav';
 import { useStateContext } from '../../contexts/ContextProvider';
-import api from '../../api';
+// import api from '../../api';
 
 // ----------------------------------------------------------------------
 
@@ -36,23 +36,6 @@ const Main = styled('div')(({ theme }) => ({
 
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
-  const { token, setUser, setToken } = useStateContext()
-
-  useEffect(() => {
-    api.post('admin/auth/me')
-      .then(({ data }) => {
-        setUser(data)
-      })
-      .catch((e) => {
-        setUser(null)
-        setToken(null)
-      })
-  }, [])
-
-  if (!token) {
-    return <Navigate to="/login" />
-  }
-
 
   return (
     <StyledRoot>

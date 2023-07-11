@@ -1,12 +1,13 @@
 import { Button, Container, Stack, Typography } from "@mui/material";
 import { Helmet } from "react-helmet-async";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
 import PostForm from "src/sections/@dashboard/post/PostForm";
 
-export default function NotificationCreate() {
-    const navigate = useNavigate()
+export default function NotificationEditPage() {
+    const navigate = useNavigate();
+    const { slug } = useParams();
 
     const handleBack = () => {
         navigate(-1);
@@ -15,7 +16,7 @@ export default function NotificationCreate() {
     return (
         <>
             <Helmet>
-                <title> Tạo thông báo mới | Sinh viên 5 tốt TVU </title>
+                <title> Sửa thông báo | Sinh viên 5 tốt TVU </title>
             </Helmet>
 
             <Container>
@@ -24,14 +25,15 @@ export default function NotificationCreate() {
                         Trở lại
                     </Button>
                     <Typography variant="h4" gutterBottom>
-                        Tạo thông báo
+                        Chỉnh sửa
                     </Typography>
                 </Stack>
 
                 <PostForm
                     name="thông báo"
                     direct="/dashboard/thong-bao"
-                    submitUrl="admin/post/notifications/create"
+                    submitUrl="admin/forum/notifications/update"
+                    slug={slug}
                 />
 
             </Container >
