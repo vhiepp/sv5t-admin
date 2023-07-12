@@ -1,5 +1,6 @@
 // component
 import SvgColor from '../../../components/svg-color';
+import NotificationsActiveTwoToneIcon from '@mui/icons-material/NotificationsActiveTwoTone';
 
 // ----------------------------------------------------------------------
 
@@ -19,7 +20,7 @@ const navConfig = [
   {
     title: 'Thông báo',
     path: '/dashboard/thong-bao',
-    icon: icon('ic_blog'),
+    icon: <NotificationsActiveTwoToneIcon />,
   },
   // {
   //   title: 'user',

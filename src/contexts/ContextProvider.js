@@ -1,20 +1,19 @@
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
-const { createContext, useState, useContext, useEffect } = require("react");
-
+const { createContext, useState, useContext } = require("react");
 
 const domain = process.env.REACT_APP_SERVER_DOMAIN
-
 
 const StateContext = createContext({
     user: {},
     setUser: () => { },
-    api: {}
+    axiosApi: {}
 })
 
 export const ContextProvider = ({ children }) => {
     const [user, setUser] = useState({})
     const navigate = useNavigate();
+
     const axiosApi = axios.create({
         baseURL: `${domain}/api`
     })
@@ -33,22 +32,12 @@ export const ContextProvider = ({ children }) => {
 
             if (response.status === 401) {
                 navigate('/login');
-                console.warn('Bạn cần phải đăng nhập với quyền quản trị để xem được nội dung này!');
             }
 
         } catch (error) {
             // console.log(error);
         }
     })
-
-    useEffect(() => {
-        axiosApi.post('/admin/auth/me')
-            .then(({ data }) => {
-                setUser(data.user)
-            })
-            .catch((e) => {
-            })
-    }, [])
 
     return (
         <StateContext.Provider value={{

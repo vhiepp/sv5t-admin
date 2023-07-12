@@ -2,13 +2,12 @@ import { Alert, Button, Card, Container, FormControlLabel, LinearProgress, Stack
 import { isUndefined } from "lodash"
 import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import api from "src/api"
 import Editor from "src/components/ckeditor5"
 import FilePondImage from "src/components/filepond/filepondimage"
 import IOSSwitch from "src/components/switch/IOSSwitch"
+import { useStateContext } from "src/contexts/ContextProvider"
 
 export default function PostForm({ name, direct, submitUrl, ...props }) {
-
     const [title, setTitle] = useState('');
     const [thumbnailUrl, setThumbnailUrl] = useState('');
     const [description, setDescription] = useState('');
@@ -17,6 +16,7 @@ export default function PostForm({ name, direct, submitUrl, ...props }) {
     const [reRender, setReRender] = useState(true);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { axiosApi } = useStateContext();
     const validate = useRef({
         title: {
             err: false,
@@ -33,7 +33,7 @@ export default function PostForm({ name, direct, submitUrl, ...props }) {
     });
     useEffect(() => {
         if (!isUndefined(props.slug)) {
-            api.post('/post', { slug: props.slug })
+            axiosApi.post('/post', { slug: props.slug })
                 .then(({ data }) => {
                     const { title, content, thumb, description } = data;
                     setTitle(title);
@@ -97,7 +97,7 @@ export default function PostForm({ name, direct, submitUrl, ...props }) {
         }
         setLoading(true);
 
-        api.post(submitUrl, {
+        axiosApi.post(submitUrl, {
             thumbnail: thumbnailUrl,
             title,
             description,

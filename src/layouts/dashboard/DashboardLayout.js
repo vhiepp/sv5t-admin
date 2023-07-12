@@ -6,7 +6,6 @@ import { styled } from '@mui/material/styles';
 import Header from './header';
 import Nav from './nav';
 import { useStateContext } from '../../contexts/ContextProvider';
-// import api from '../../api';
 
 // ----------------------------------------------------------------------
 
@@ -36,6 +35,18 @@ const Main = styled('div')(({ theme }) => ({
 
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
+  const { setUser, axiosApi } = useStateContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axiosApi.post('/admin/auth/me')
+      .then(({ data }) => {
+        setUser(data.user);
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+  }, [])
 
   return (
     <StyledRoot>

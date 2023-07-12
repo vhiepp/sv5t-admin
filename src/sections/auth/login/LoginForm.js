@@ -6,7 +6,6 @@ import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
 import { useStateContext } from '../../../contexts/ContextProvider';
-import api from '../../../api';
 
 // ----------------------------------------------------------------------
 
@@ -14,14 +13,14 @@ export default function LoginForm() {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
-  const { setUser } = useStateContext();
+  const { setUser, axiosApi } = useStateContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
 
     if (email && password) {
-      api.post('admin/auth/login', {
+      axiosApi.post('admin/auth/login', {
         email,
         password
       })

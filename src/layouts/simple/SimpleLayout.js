@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 // components
 import Logo from '../../components/logo';
+import { Avatar, Box } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -24,8 +25,17 @@ export default function SimpleLayout() {
   return (
     <>
       <StyledHeader>
-        <Logo />
-      </StyledHeader>
+        <Box sx={{
+          display: 'inline-flex',
+          position: 'fixed',
+          top: { xs: 16, sm: 24, md: 40 },
+          left: { xs: 16, sm: 24, md: 40 },
+        }}>
+          <Avatar src={`/assets/icons/navbar/dtncshcm.svg`} variant="rounded" alt="Đội thanh niên Cộng sản Hồ Chí Minh" title="Đội thanh niên Cộng sản Hồ Chí Minh" />
+          <Avatar src={`/assets/icons/navbar/tvu.svg`} sx={{ marginX: 1 }} alt="Đại học Trà Vinh" title="Đại học Trà Vinh" />
+          <Avatar src={`/assets/icons/navbar/hsvvn.svg`} alt="Hội sinh viên Việt Nam" title="Hội sinh viên Việt Nam" />
+        </Box>
+      </StyledHeader >
 
       <Outlet />
     </>

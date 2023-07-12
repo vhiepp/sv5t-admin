@@ -2,7 +2,7 @@ import { Badge, Box, Grid, LinearProgress, Stack, Tab, Tabs } from "@mui/materia
 import { BlogPostCard, BlogPostsSort } from "../blog";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useEffect, useState } from "react";
-import api from "src/api";
+import { useStateContext } from "src/contexts/ContextProvider";
 
 const SORT_OPTIONS = [
     { value: 'new', label: 'Mới nhất' },
@@ -16,6 +16,7 @@ export default function PostList({ type, url }) {
     const [order, setOrder] = useState('new');
     const [loading, setLoading] = useState(1);
     const [pendingStatus, setPendingStatus] = useState(true);
+    const { axiosApi } = useStateContext()
 
     useEffect(() => {
         handleFetchPosts();
@@ -27,7 +28,7 @@ export default function PostList({ type, url }) {
 
 
     const handleFetchCountPending = () => {
-        api.post(`/admin/forum/${type}/pending-count`)
+        axiosApi.post(`/admin/forum/${type}/pending-count`)
             .then(({ data }) => {
                 if (data.count > 0) {
                     setPendingStatus(false);
@@ -58,7 +59,7 @@ export default function PostList({ type, url }) {
                 break;
         }
 
-        api.post(apiPostUrl, {
+        axiosApi.post(apiPostUrl, {
             paginate: 7,
             order,
             active: activeStatus

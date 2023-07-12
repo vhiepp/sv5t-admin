@@ -11,7 +11,6 @@ import Iconify from '../components/iconify';
 // sections
 import { useStateContext } from '../contexts/ContextProvider';
 import { LoginForm } from '../sections/auth/login';
-import api from '../api';
 
 // ----------------------------------------------------------------------
 
@@ -45,12 +44,12 @@ const StyledContent = styled('div')(({ theme }) => ({
 
 export default function LoginPage() {
   const mdUp = useResponsive('up', 'md');
-  const { setUser } = useStateContext()
+  const { setUser, axiosApi } = useStateContext()
   const [googleUrl, setGoogleUrl] = useState(null)
   const navigate = useNavigate();
 
   useEffect(() => {
-    // api.post('/admin/auth/me')
+    // axiosApi.post('/admin/auth/me')
     //   .then(({ data }) => {
     //     if (data.user) {
     //       setUser(data.user);
@@ -60,10 +59,10 @@ export default function LoginPage() {
     //   .catch((e) => {
     //     console.warn(e);
     //   })
-    api.post('admin/auth/google/url')
-      .then(({ data }) => {
-        setGoogleUrl(data.url)
-      })
+    // api.post('admin/auth/google/url')
+    //   .then(({ data }) => {
+    //     setGoogleUrl(data.url)
+    //   })
   }, [])
 
 

@@ -31,7 +31,7 @@ export default function NotificationCreate() {
                 <PostForm
                     name="thông báo"
                     direct="/dashboard/thong-bao"
-                    submitUrl="admin/post/notifications/create"
+                    submitUrl="admin/forum/notifications/create"
                 />
 
             </Container >
