@@ -49,22 +49,21 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // axiosApi.post('/admin/auth/me')
-    //   .then(({ data }) => {
-    //     if (data.user) {
-    //       setUser(data.user);
-    //       navigate('/dashboard/app');
-    //     }
-    //   })
-    //   .catch((e) => {
-    //     console.warn(e);
-    //   })
+    axiosApi.post('/admin/auth/me')
+      .then(({ data }) => {
+        if (data.user) {
+          setUser(data.user);
+          navigate('/dashboard/app');
+        }
+      })
+      .catch((e) => {
+        console.warn(e);
+      })
     // api.post('admin/auth/google/url')
     //   .then(({ data }) => {
     //     setGoogleUrl(data.url)
     //   })
   }, [])
-
 
   const handleLoginSocial = (url) => {
     if (url) {

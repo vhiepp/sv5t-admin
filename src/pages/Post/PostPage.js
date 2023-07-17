@@ -10,7 +10,9 @@ import PostList from 'src/sections/@dashboard/post/PostList';
 // ----------------------------------------------------------------------
 
 const url = {
-  edit: "/dashboard/bai-viet/edit"
+  edit: "/dashboard/bai-viet/edit",
+  delete: "/admin/forum/posts/delete",
+  active: "/admin/forum/posts/active",
 }
 
 // ----------------------------------------------------------------------
@@ -39,7 +41,7 @@ export default function PostPage() {
           </Button>
         </Stack>
 
-        <PostList type="posts" url={url} />
+        <PostList type="posts" url={url} typeName="bài viết" />
 
       </Container>
     </>

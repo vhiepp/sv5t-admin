@@ -106,14 +106,10 @@ export default function PostForm({ name, direct, submitUrl, ...props }) {
             slug: !isUndefined(props.slug) ? props.slug : null,
         })
             .then(({ data }) => {
-                // handle the response
-                console.log(data);
                 setLoading(false);
-
                 if (data.status === 'success') {
                     navigate(direct);
                 }
-
             })
             .catch((error) => {
                 setLoading(false);

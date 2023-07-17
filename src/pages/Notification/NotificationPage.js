@@ -9,7 +9,9 @@ import PostList from 'src/sections/@dashboard/post/PostList';
 
 // ----------------------------------------------------------------------
 const url = {
-    edit: "/dashboard/thong-bao/edit"
+    edit: "/dashboard/thong-bao/edit",
+    delete: "/admin/forum/notifications/delete",
+    active: "/admin/forum/notifications/active",
 }
 // ----------------------------------------------------------------------
 
@@ -37,7 +39,7 @@ export default function NotificationPage() {
                     </Button>
                 </Stack>
 
-                <PostList type="notifications" url={url} />
+                <PostList type="notifications" url={url} typeName="thông báo" />
 
             </Container>
         </>

@@ -1,21 +1,24 @@
-import { Badge, Box, Grid, LinearProgress, Stack, Tab, Tabs } from "@mui/material";
+import { Badge, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, LinearProgress, Stack, Tab, Tabs } from "@mui/material";
 import { BlogPostCard, BlogPostsSort } from "../blog";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useEffect, useState } from "react";
 import { useStateContext } from "src/contexts/ContextProvider";
+import './style-content-ckeditor.css';
 
 const SORT_OPTIONS = [
     { value: 'new', label: 'Mới nhất' },
     { value: 'old', label: 'Cũ nhất' },
 ];
 
-export default function PostList({ type, url }) {
+export default function PostList({ type, url, typeName }) {
     const [active, setActive] = useState(1);
     const [posts, setPosts] = useState([]);
     const [apiPostUrl, setApiPostUrl] = useState(`/${type}`);
     const [order, setOrder] = useState('new');
     const [loading, setLoading] = useState(1);
     const [pendingStatus, setPendingStatus] = useState(true);
+    const [openDialogPostContent, setOpenDialogPostContent] = useState(false);
+    const [indexPostDialogContent, setIndexPostDialogContent] = useState(0);
     const { axiosApi } = useStateContext()
 
     useEffect(() => {
@@ -100,6 +103,21 @@ export default function PostList({ type, url }) {
         };
     }
 
+    const handleDeletedPost = (index) => {
+        let newPost = [...posts];
+        newPost.splice(index, 1);
+        setPosts(newPost);
+    }
+
+    const handleOpenDialogPostContent = (index) => {
+        setIndexPostDialogContent(index);
+        setOpenDialogPostContent(true);
+    };
+
+    const handleCloseDialogPostContent = () => {
+        setOpenDialogPostContent(false);
+    };
+
     return (
         <>
             <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
@@ -142,10 +160,36 @@ export default function PostList({ type, url }) {
             >
                 <Grid container spacing={3}>
                     {posts.map((post, index) => (
-                        <BlogPostCard key={index} post={post} index={index} url={url} />
+                        <BlogPostCard key={index} typeName={typeName} post={post} index={index} onDeleted={handleDeletedPost} url={url} active={active} onOpenContent={handleOpenDialogPostContent} />
                     ))}
                 </Grid>
             </InfiniteScroll>
+            {
+                openDialogPostContent &&
+                <Dialog
+                    fullWidth={true}
+                    scroll={'body'}
+                    maxWidth="md"
+                    open={openDialogPostContent}
+                    onClose={handleCloseDialogPostContent}
+                >
+                    {/* <DialogTitle>{posts[indexPostDialogContent].title || ""}</DialogTitle> */}
+                    <DialogContent dividers={false}>
+                        <h1>{posts[indexPostDialogContent].title || ""}</h1>
+                        <hr />
+                        <p>
+                            <b>{posts[indexPostDialogContent].description}</b>
+                        </p>
+                        <DialogContentText dangerouslySetInnerHTML={{ __html: posts[indexPostDialogContent].content }} className="ck-content">
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseDialogPostContent}>Close</Button>
+                    </DialogActions>
+                </Dialog>
+            }
+
+
         </>
     )
 }
