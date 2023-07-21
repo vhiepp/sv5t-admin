@@ -14,6 +14,8 @@ import NotificationPage from './pages/Notification/NotificationPage';
 import NotificationCreate from './pages/Notification/NotificationCreate';
 import PostEditPage from './pages/Post/PostEditPage';
 import NotificationEditPage from './pages/Notification/NotificationEditPage';
+import TestPage from './pages/TestPage';
+import ApprovalGoodStudent from './pages/GoodStudent/ApprovalGoodStudent';
 
 // ----------------------------------------------------------------------
 
@@ -33,6 +35,8 @@ export default function Router() {
         { path: 'thong-bao', element: <NotificationPage /> },
         { path: 'thong-bao/tao-moi', element: <NotificationCreate /> },
         { path: 'thong-bao/edit/:slug', element: <NotificationEditPage /> },
+        { path: 'xet-sinh-vien-5-tot', element: <ApprovalGoodStudent /> },
+        { path: 'test', element: <TestPage /> },
       ],
     },
     {
@@ -44,7 +48,8 @@ export default function Router() {
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: '404', element: <Page404 /> },
-        { path: '*', element: <Navigate to="/404" /> },
+        // { path: '*', element: <Navigate to="/404" /> },
+        { path: '*', element: <Page404 /> },
       ],
     },
     {

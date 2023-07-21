@@ -1,6 +1,8 @@
 // component
 import SvgColor from '../../../components/svg-color';
 import NotificationsActiveTwoToneIcon from '@mui/icons-material/NotificationsActiveTwoTone';
+import ChecklistTwoToneIcon from '@mui/icons-material/ChecklistTwoTone';
+import PostAddTwoToneIcon from '@mui/icons-material/PostAddTwoTone';
 
 // ----------------------------------------------------------------------
 
@@ -15,12 +17,17 @@ const navConfig = [
   {
     title: 'Bài viết',
     path: '/dashboard/bai-viet',
-    icon: icon('ic_blog'),
+    icon: <PostAddTwoToneIcon />,
   },
   {
     title: 'Thông báo',
     path: '/dashboard/thong-bao',
     icon: <NotificationsActiveTwoToneIcon />,
+  },
+  {
+    title: 'Xét SV5T',
+    path: '/dashboard/xet-sinh-vien-5-tot',
+    icon: <ChecklistTwoToneIcon />,
   },
   // {
   //   title: 'user',
