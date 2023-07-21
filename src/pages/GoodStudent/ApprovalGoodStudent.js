@@ -1,7 +1,11 @@
 const ApprovalGoodStudent = () => {
 
     return (
-        <h2>Xét sv5t</h2>
+        <>
+            <h2>
+                Xét sinh viên 5 tốt
+            </h2>
+        </>
     )
 }
 

@@ -10,6 +10,14 @@ export default function GlobalStyles() {
         '*': {
           boxSizing: 'border-box',
         },
+        '*::-webkit-scrollbar': {
+          width: '5px',
+          backgroundColor: '#F5F5F5'
+        },
+        '*::-webkit-scrollbar-thumb': {
+          backgroundColor: '#a1a1a1',
+          borderRadius: '2px'
+        },
         html: {
           margin: 0,
           padding: 0,

@@ -29,11 +29,11 @@ const navConfig = [
     path: '/dashboard/xet-sinh-vien-5-tot',
     icon: <ChecklistTwoToneIcon />,
   },
-  // {
-  //   title: 'user',
-  //   path: '/dashboard/user',
-  //   icon: icon('ic_user'),
-  // },
+  {
+    title: 'user',
+    path: '/dashboard/user',
+    icon: icon('ic_user'),
+  },
   // {
   //   title: 'product',
   //   path: '/dashboard/products',

@@ -36,7 +36,6 @@ const Main = styled('div')(({ theme }) => ({
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
   const { setUser, axiosApi } = useStateContext();
-  const navigate = useNavigate();
 
   useEffect(() => {
     axiosApi.post('/admin/auth/me')
