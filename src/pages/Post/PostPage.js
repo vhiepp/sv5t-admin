@@ -1,11 +1,11 @@
-import { Helmet } from 'react-helmet-async';
-import { useNavigate } from 'react-router-dom';
+import { Helmet } from "react-helmet-async";
+import { useNavigate } from "react-router-dom";
 // @mui
-import { Button, Container, Stack, Typography } from '@mui/material';
+import { Button, Container, Stack, Typography } from "@mui/material";
 // components
-import Iconify from '../../components/iconify';
+import Iconify from "../../components/iconify";
 // mock
-import PostList from 'src/sections/@dashboard/post/PostList';
+import PostList from "src/sections/@dashboard/post/PostList";
 
 // ----------------------------------------------------------------------
 
@@ -13,17 +13,16 @@ const url = {
   edit: "/dashboard/bai-viet/edit",
   delete: "/admin/forum/posts/delete",
   active: "/admin/forum/posts/active",
-}
+};
 
 // ----------------------------------------------------------------------
 
 export default function PostPage() {
-
   const navigate = useNavigate();
 
   const handleClickNewPost = () => {
-    navigate('dang-bai');
-  }
+    navigate("dang-bai");
+  };
 
   return (
     <>
@@ -32,17 +31,25 @@ export default function PostPage() {
       </Helmet>
 
       <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          mb={5}
+        >
           <Typography variant="h4" gutterBottom>
             Bài viết
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleClickNewPost}>
+          <Button
+            variant="contained"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+            onClick={handleClickNewPost}
+          >
             Đăng
           </Button>
         </Stack>
 
         <PostList type="posts" url={url} typeName="bài viết" />
-
       </Container>
     </>
   );

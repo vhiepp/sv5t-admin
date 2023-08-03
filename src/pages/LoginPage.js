@@ -1,75 +1,85 @@
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from "react-helmet-async";
 // @mui
-import { styled } from '@mui/material/styles';
-import { Link, Container, Typography, Divider, Stack, Button, Box, Avatar } from '@mui/material';
+import { styled } from "@mui/material/styles";
+import {
+  Link,
+  Container,
+  Typography,
+  Divider,
+  Stack,
+  Button,
+  Box,
+  Avatar,
+} from "@mui/material";
 // hooks
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import useResponsive from '../hooks/useResponsive';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useResponsive from "../hooks/useResponsive";
 // components
-import Iconify from '../components/iconify';
+import Iconify from "../components/iconify";
 // sections
-import { useStateContext } from '../contexts/ContextProvider';
-import { LoginForm } from '../sections/auth/login';
+import { useStateContext } from "../contexts/ContextProvider";
+import { LoginForm } from "../sections/auth/login";
 
 // ----------------------------------------------------------------------
 
-const StyledRoot = styled('div')(({ theme }) => ({
-  [theme.breakpoints.up('md')]: {
-    display: 'flex',
+const StyledRoot = styled("div")(({ theme }) => ({
+  [theme.breakpoints.up("md")]: {
+    display: "flex",
   },
 }));
 
-const StyledSection = styled('div')(({ theme }) => ({
-  width: '100%',
+const StyledSection = styled("div")(({ theme }) => ({
+  width: "100%",
   maxWidth: 480,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
   boxShadow: theme.customShadows.card,
   backgroundColor: theme.palette.background.default,
 }));
 
-const StyledContent = styled('div')(({ theme }) => ({
+const StyledContent = styled("div")(({ theme }) => ({
   maxWidth: 480,
-  margin: 'auto',
-  minHeight: '100vh',
-  display: 'flex',
-  justifyContent: 'center',
-  flexDirection: 'column',
+  margin: "auto",
+  minHeight: "100vh",
+  display: "flex",
+  justifyContent: "center",
+  flexDirection: "column",
   padding: theme.spacing(12, 0),
 }));
 
 // ----------------------------------------------------------------------
 
 export default function LoginPage() {
-  const mdUp = useResponsive('up', 'md');
-  const { setUser, axiosApi } = useStateContext()
-  const [googleUrl, setGoogleUrl] = useState(null)
+  const mdUp = useResponsive("up", "md");
+  const { setUser, axiosApi } = useStateContext();
+  const [googleUrl, setGoogleUrl] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    axiosApi.post('/admin/auth/me')
+    axiosApi
+      .post("/admin/auth/me")
       .then(({ data }) => {
         if (data.user) {
           setUser(data.user);
-          navigate('/dashboard/app');
+          navigate("/dashboard/app");
         }
       })
       .catch((e) => {
         console.warn(e);
-      })
+      });
     // api.post('admin/auth/google/url')
     //   .then(({ data }) => {
     //     setGoogleUrl(data.url)
     //   })
-  }, [])
+  }, []);
 
   const handleLoginSocial = (url) => {
     if (url) {
       window.location.href = url;
     }
-  }
+  };
 
   return (
     <>
@@ -78,15 +88,31 @@ export default function LoginPage() {
       </Helmet>
 
       <StyledRoot>
-        <Box sx={{
-          display: 'inline-flex',
-          position: 'fixed',
-          top: { xs: 16, sm: 24, md: 40 },
-          left: { xs: 16, sm: 24, md: 40 },
-        }}>
-          <Avatar src={`/assets/icons/navbar/dtncshcm.svg`} variant="rounded" alt="Đội thanh niên Cộng sản Hồ Chí Minh" title="Đội thanh niên Cộng sản Hồ Chí Minh" />
-          <Avatar src={`/assets/icons/navbar/tvu.svg`} sx={{ marginX: 1 }} alt="Đại học Trà Vinh" title="Đại học Trà Vinh" />
-          <Avatar src={`/assets/icons/navbar/hsvvn.svg`} alt="Hội sinh viên Việt Nam" title="Hội sinh viên Việt Nam" />
+        <Box
+          sx={{
+            display: "inline-flex",
+            position: "fixed",
+            top: { xs: 16, sm: 24, md: 40 },
+            left: { xs: 16, sm: 24, md: 40 },
+          }}
+        >
+          <Avatar
+            src={`/assets/icons/navbar/dtncshcm.svg`}
+            variant="rounded"
+            alt="Đội thanh niên Cộng sản Hồ Chí Minh"
+            title="Đội thanh niên Cộng sản Hồ Chí Minh"
+          />
+          <Avatar
+            src={`/assets/icons/navbar/tvu.svg`}
+            sx={{ marginX: 1 }}
+            alt="Đại học Trà Vinh"
+            title="Đại học Trà Vinh"
+          />
+          <Avatar
+            src={`/assets/icons/navbar/hsvvn.svg`}
+            alt="Hội sinh viên Việt Nam"
+            title="Hội sinh viên Việt Nam"
+          />
         </Box>
 
         {mdUp && (
@@ -94,7 +120,10 @@ export default function LoginPage() {
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
               Hi, Welcome Back
             </Typography>
-            <img src="/assets/illustrations/illustration_login.png" alt="login" />
+            <img
+              src="/assets/illustrations/illustration_login.png"
+              alt="login"
+            />
           </StyledSection>
         )}
 
@@ -105,17 +134,33 @@ export default function LoginPage() {
             </Typography>
 
             <Typography variant="body2" sx={{ mb: 5 }}>
-              Don’t have an account? {''}
+              Don’t have an account? {""}
               <Link variant="subtitle2">Get started</Link>
             </Typography>
 
             <Stack direction="row" spacing={2}>
-              <Button fullWidth size="large" color="inherit" variant="outlined" onClick={() => handleLoginSocial(googleUrl)}>
-                <Iconify icon="flat-color-icons:google" color="#DF3E30" width={22} height={22} />
+              <Button
+                fullWidth
+                size="large"
+                color="inherit"
+                variant="outlined"
+                onClick={() => handleLoginSocial(googleUrl)}
+              >
+                <Iconify
+                  icon="flat-color-icons:google"
+                  color="#DF3E30"
+                  width={22}
+                  height={22}
+                />
               </Button>
 
               <Button fullWidth size="large" color="inherit" variant="outlined">
-                <Iconify icon="logos:microsoft-icon" color="#1877F2" width={22} height={22} />
+                <Iconify
+                  icon="logos:microsoft-icon"
+                  color="#1877F2"
+                  width={22}
+                  height={22}
+                />
               </Button>
 
               {/* <Button fullWidth size="large" color="inherit" variant="outlined">
@@ -124,7 +169,7 @@ export default function LoginPage() {
             </Stack>
 
             <Divider sx={{ my: 3 }}>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              <Typography variant="body2" sx={{ color: "text.secondary" }}>
                 OR
               </Typography>
             </Divider>
