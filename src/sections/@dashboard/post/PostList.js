@@ -252,7 +252,7 @@ export default function PostList({ type, url, typeName }) {
                 ></DialogContentText>
               </AccordionDetails>
             </Accordion>
-            <StyledInfo>
+            <StyledInfo sx={{ mr: 2 }}>
               <ItemInfo icon="ph:heart-fill" number={posts[indexPostDialogContent].hearts.count} />
               <ItemInfo icon="mingcute:comment-fill" number={posts[indexPostDialogContent].comments.count} />
               <ItemInfo icon="eva:share-fill" number={0} />

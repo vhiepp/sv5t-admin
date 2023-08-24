@@ -1,16 +1,7 @@
 import { Helmet } from "react-helmet-async";
 // @mui
 import { styled } from "@mui/material/styles";
-import {
-  Link,
-  Container,
-  Typography,
-  Divider,
-  Stack,
-  Button,
-  Box,
-  Avatar,
-} from "@mui/material";
+import { Link, Container, Typography, Divider, Stack, Button, Box, Avatar } from "@mui/material";
 // hooks
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +11,8 @@ import Iconify from "../components/iconify";
 // sections
 import { useStateContext } from "../contexts/ContextProvider";
 import { LoginForm } from "../sections/auth/login";
-
+import { signInWithPopup, signInWithRedirect, GoogleAuthProvider, OAuthProvider } from "firebase/auth";
+import { auth } from "src/firebase";
 // ----------------------------------------------------------------------
 
 const StyledRoot = styled("div")(({ theme }) => ({
@@ -54,8 +46,9 @@ const StyledContent = styled("div")(({ theme }) => ({
 export default function LoginPage() {
   const mdUp = useResponsive("up", "md");
   const { setUser, axiosApi } = useStateContext();
-  const [googleUrl, setGoogleUrl] = useState(null);
   const navigate = useNavigate();
+  const [unauthorizedError, setUnauthorizedError] = useState(false);
+  const [disableButton, setDisableButton] = useState(false);
 
   useEffect(() => {
     axiosApi
@@ -69,16 +62,44 @@ export default function LoginPage() {
       .catch((e) => {
         console.warn(e);
       });
-    // api.post('admin/auth/google/url')
-    //   .then(({ data }) => {
-    //     setGoogleUrl(data.url)
-    //   })
   }, []);
 
-  const handleLoginSocial = (url) => {
-    if (url) {
-      window.location.href = url;
+  const handleLoginWithGoogle = async () => {
+    setDisableButton(true);
+    if (unauthorizedError) {
+      setUnauthorizedError(false);
     }
+    try {
+      const provider = new GoogleAuthProvider();
+      const { user } = await signInWithPopup(auth, provider);
+      const { data } = await axiosApi.post("/admin/auth/login/provider", user);
+      if (data.user) {
+        setUser(data.user);
+        navigate("/dashboard/app");
+      }
+    } catch (error) {
+      setUnauthorizedError(true);
+    }
+    setDisableButton(false);
+  };
+
+  const handleLoginWithMicrosoft = async () => {
+    setDisableButton(true);
+    if (unauthorizedError) {
+      setUnauthorizedError(false);
+    }
+    try {
+      const provider = new OAuthProvider("microsoft.com");
+      const { user } = await signInWithPopup(auth, provider);
+      const { data } = await axiosApi.post("/admin/auth/login/provider", user);
+      if (data.user) {
+        setUser(data.user);
+        navigate("/dashboard/app");
+      }
+    } catch (error) {
+      setUnauthorizedError(true);
+    }
+    setDisableButton(false);
   };
 
   return (
@@ -108,11 +129,7 @@ export default function LoginPage() {
             alt="Đại học Trà Vinh"
             title="Đại học Trà Vinh"
           />
-          <Avatar
-            src={`/assets/icons/navbar/hsvvn.svg`}
-            alt="Hội sinh viên Việt Nam"
-            title="Hội sinh viên Việt Nam"
-          />
+          <Avatar src={`/assets/icons/navbar/hsvvn.svg`} alt="Hội sinh viên Việt Nam" title="Hội sinh viên Việt Nam" />
         </Box>
 
         {mdUp && (
@@ -120,10 +137,7 @@ export default function LoginPage() {
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
               Hi, Welcome Back
             </Typography>
-            <img
-              src="/assets/illustrations/illustration_login.png"
-              alt="login"
-            />
+            <img src="/assets/illustrations/illustration_login.png" alt="login" />
           </StyledSection>
         )}
 
@@ -138,37 +152,33 @@ export default function LoginPage() {
               <Link variant="subtitle2">Get started</Link>
             </Typography>
 
-            <Stack direction="row" spacing={2}>
+            <Stack direction="row" spacing={2} sx={{ mb: 1 }}>
               <Button
                 fullWidth
                 size="large"
                 color="inherit"
                 variant="outlined"
-                onClick={() => handleLoginSocial(googleUrl)}
+                onClick={handleLoginWithGoogle}
+                disabled={disableButton}
               >
-                <Iconify
-                  icon="flat-color-icons:google"
-                  color="#DF3E30"
-                  width={22}
-                  height={22}
-                />
+                <Iconify icon="flat-color-icons:google" color="#DF3E30" width={22} height={22} />
               </Button>
 
-              <Button fullWidth size="large" color="inherit" variant="outlined">
-                <Iconify
-                  icon="logos:microsoft-icon"
-                  color="#1877F2"
-                  width={22}
-                  height={22}
-                />
+              <Button
+                fullWidth
+                size="large"
+                color="inherit"
+                variant="outlined"
+                onClick={handleLoginWithMicrosoft}
+                disabled={disableButton}
+              >
+                <Iconify icon="logos:microsoft-icon" color="#1877F2" width={22} height={22} />
               </Button>
-
-              {/* <Button fullWidth size="large" color="inherit" variant="outlined">
-                <Iconify icon="eva:twitter-fill" color="#1C9CEA" width={22} height={22} />
-              </Button> */}
             </Stack>
-
-            <Divider sx={{ my: 3 }}>
+            <Typography fontSize=".8rem" textAlign="center" color="red" fontStyle="italic" fontWeight="600">
+              {unauthorizedError ? "Bạn không có quyền truy cập vào trang dành cho nhà quản trị!" : " "}
+            </Typography>
+            <Divider sx={{ mb: 3, mt: 1 }}>
               <Typography variant="body2" sx={{ color: "text.secondary" }}>
                 OR
               </Typography>
