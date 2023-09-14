@@ -247,6 +247,7 @@ export default function PostList({ type, url, typeName }) {
               <AccordionDetails>
                 <Typography fontWeight="600">{posts[indexPostDialogContent].description}</Typography>
                 <DialogContentText
+                  component="div"
                   dangerouslySetInnerHTML={{ __html: posts[indexPostDialogContent].content }}
                   className="ck-content"
                 ></DialogContentText>
