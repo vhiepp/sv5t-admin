@@ -30,15 +30,15 @@ const navConfig = [
     icon: <ChecklistTwoToneIcon />,
   },
   {
-    title: 'user',
-    path: '/dashboard/user',
+    title: 'Tài khoản',
+    path: '/dashboard/tai-khoan',
     icon: icon('ic_user'),
   },
-  // {
-  //   title: 'product',
-  //   path: '/dashboard/products',
-  //   icon: icon('ic_cart'),
-  // },
+  {
+    title: 'product',
+    path: '/dashboard/products',
+    icon: icon('ic_cart'),
+  },
 ];
 
 export default navConfig;

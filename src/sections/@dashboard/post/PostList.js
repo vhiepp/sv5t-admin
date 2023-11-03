@@ -173,13 +173,13 @@ export default function PostList({ type, url, typeName }) {
             <Tab
               label={
                 <Badge invisible={pendingStatus} variant="dot" color="success">
-                  <Box>Pending</Box>
+                  <Box>Chờ duyệt</Box>
                 </Badge>
               }
               {...a11yProps(0)}
             />
-            <Tab label="Show" {...a11yProps(1)} />
-            <Tab label="Deleted" {...a11yProps(2)} />
+            <Tab label="Hiển thị" {...a11yProps(1)} />
+            <Tab label="Đã xóa" {...a11yProps(2)} />
           </Tabs>
         </Box>
         <BlogPostsSort options={SORT_OPTIONS} onSort={handlePostSort} defaultValue={order} />

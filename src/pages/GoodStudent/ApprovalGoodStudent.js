@@ -23,6 +23,7 @@ import { Helmet } from "react-helmet-async";
 import Iconify from "src/components/iconify/Iconify";
 import { useStateContext } from "src/contexts/ContextProvider";
 import dayjs from "dayjs";
+import ApprovalList from "src/sections/@dashboard/approval/ApprovalList";
 
 const today = dayjs();
 
@@ -32,24 +33,32 @@ const ApprovalGoodStudent = () => {
   const [dateEndNewApproval, setDateEndNewApproval] = useState();
   const [listApprovals, setListApprovals] = useState([]);
   const [errDate, setErrDate] = useState("");
-  const [approvalValue, setApprovalValue] = useState(1);
+  const [approvalValue, setApprovalValue] = useState(null);
+  const [isOpenApproval, setIsOpenApproval] = useState(false);
   const { axiosApi } = useStateContext();
 
   useEffect(() => {
     handleGetApprovalList();
+    // handleGetApprovalRequestList();
   }, []);
 
   const handleGetApprovalList = () => {
     axiosApi.post("/admin/approval/get").then(({ data }) => {
       const approvals = data.data;
+      approvals.forEach(a => {
+        if (a.status == 'happenning' || a.status == 'upcoming') {
+          setIsOpenApproval(true);
+        }
+      });
       setListApprovals(approvals);
-      setApprovalValue(approvals[0].id);
+      setApprovalValue(approvals[0].id);  
     });
   };
 
   const handleOpenDialogAddNewApproval = () => {
     setOpenDialogAddNewApproval(true);
   };
+  
   const handleCloseDialogAddNewApproval = () => {
     setOpenDialogAddNewApproval(false);
     setDateStartNewApproval(today);
@@ -100,18 +109,18 @@ const ApprovalGoodStudent = () => {
   return (
     <>
       <Helmet>
-        <title> Xét duyệt | Sinh viên 5 tốt TVU </title>
+        <title> Xét Sinh Viên 5 tốt | Sinh viên 5 tốt TVU </title>
       </Helmet>
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Xét duyệt
+            Xét SV5T
           </Typography>
           <Box sx={{ minWidth: 120 }}>
             <FormControl fullWidth>
               <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                Đợt xét duyệt
+                Đợt xét SV5T
               </InputLabel>
               {listApprovals.length > 0 && (
                 <NativeSelect
@@ -125,7 +134,7 @@ const ApprovalGoodStudent = () => {
                   {listApprovals.length > 0 &&
                     listApprovals.map((approval, index) => (
                       <option value={approval.id} key={approval.id}>
-                        Ngày {approval.date_start} đến ngày {approval.date_end}
+                        Ngày {approval.date_start} đến ngày {approval.date_end} ({approval.status_description})
                       </option>
                     ))}
                 </NativeSelect>
@@ -136,11 +145,13 @@ const ApprovalGoodStudent = () => {
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}
             onClick={handleOpenDialogAddNewApproval}
-            // disabled
+            disabled={isOpenApproval}
           >
             Tạo
           </Button>
         </Stack>
+
+        {approvalValue && <ApprovalList approvalId={approvalValue} />}
       </Container>
       <Dialog fullWidth={true} maxWidth="xs" open={openDialogAddNewApproval} onClose={handleCloseDialogAddNewApproval}>
         <DialogTitle>Mở thời gian đăng kí xét duyệt SV5T mới</DialogTitle>

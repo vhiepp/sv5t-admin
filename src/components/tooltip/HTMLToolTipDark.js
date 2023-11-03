@@ -6,7 +6,7 @@ const HtmlTooltipDark = styled(({ className, backgroundColor, ...props }) => (
     [`& .${tooltipClasses.tooltip}`]: {
         backgroundColor: 'rgba(0, 30, 60)',
         color: 'rgba(255, 255, 255)',
-        maxWidth: 220,
+        maxWidth: 500,
         fontSize: theme.typography.pxToRem(12),
         border: '1px solid #dadde9',
     },

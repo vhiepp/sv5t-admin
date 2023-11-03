@@ -253,14 +253,20 @@ export default function BlogPostCard({ post, index, url, ...props }) {
                   ...((latestPostLarge || latestPost) && { display: "none" }),
                 }}
               />
-              <HtmlTooltip
+              <HtmlTooltipDark
                 placement="bottom-start"
                 title={
                   <Fragment>
                     <Typography color="inherit">
                       <b>{creator.fullname}</b>
                     </Typography>
-                    <em>{creator.email}</em>
+                    <em>
+                      <hr />
+                      mssv: <b>{creator.stu_code}</b> <br />
+                      lớp: <b>{creator.class_info?.code}</b> ( {creator.class_info?.name} ) <br />
+                      <hr />
+                      email: {creator.email}
+                    </em>
                   </Fragment>
                 }
                 // arrow
@@ -279,7 +285,7 @@ export default function BlogPostCard({ post, index, url, ...props }) {
                     cursor: "pointer",
                   }}
                 />
-              </HtmlTooltip>
+              </HtmlTooltipDark>
               <StyledCover alt={title} src={thumbnail} />
             </StyledCardMedia>
             <CardContent
